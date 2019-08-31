@@ -1,11 +1,12 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Sight : MonoBehaviour {
   
-  internal HashSet<Collider2D> targets;
+  internal HashSet<Collider2D> targets = new HashSet<Collider2D>();
   
   private void OnTriggerEnter2D(Collider2D collider) {
-    if (collider.name != "Sight") { // TODO
+    if (collider.gameObject.layer != LayerMask.NameToLayer("Sight")) { // TODO
       targets.Add(collider);
     }
   }
@@ -13,5 +14,4 @@ public class Sight : MonoBehaviour {
   private void OnTriggerExit2D(Collider2D collider) {
     targets.Remove(collider);
   }
-  
 }

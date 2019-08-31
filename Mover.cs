@@ -35,6 +35,7 @@ public abstract class Mover : MonoBehaviour {
   }
 
   protected void Move(Vector2 dir) {
+    if (dir.Equals(Vector2.zero)) return;
     Vector2 mag = dir.normalized * accel;
     rb.AddForce(mag);
   }
@@ -43,7 +44,7 @@ public abstract class Mover : MonoBehaviour {
     // if (dir.Equals(Vector2.zero)) return;
     // float ang = Vector2.SignedAngle(Vector2.up, dir);
     // rb.rotation = Mathf.LerpAngle(rb.rotation, ang, 1f / Mathf.PI);
-    
+    if (dir == 0f) return;
     float mag = Mathf.Sign(dir) * turnAccel;
     rb.AddTorque(mag);
   }
