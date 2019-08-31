@@ -2,11 +2,10 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 
-public class Swarmling : Entity {
+public class Swarmling : Mover {
   
   [SerializeField]
-  private CircleCollider2D sight;
-  private HashSet<Collider2D> targets;
+  private Sight avoidance;
   
   private void PlayerMove() {
     Vector2 lookDir = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) - rb.position;
@@ -23,13 +22,14 @@ public class Swarmling : Entity {
   
   protected override void Start() {
     base.Start();
-    targets = new HashSet<Collider2D>();
-    ContactFilter2D filter = new ContactFilter2D();
-    Debug.Log(sight.OverlapCollider(filter.NoFilter(), new Collider2D[0]));
+    filter.SetLayerMask(LayerMask.NameToLayer("Swarmlings"));
+    Debug.Log(LayerMask.NameToLayer("Swarmlings"));
   }
+  private ContactFilter2D filter = new ContactFilter2D();
   
   private void FixedUpdate() {
     Move(transform.up);
+    Debug.Log(sight.OverlapCollider(filter, new Collider2D[10]));
     if (targets.Count > 0) {
       Vector2 closest = targets
       .OrderBy(t => (rb.position - t.ClosestPoint(rb.position)).sqrMagnitude)
@@ -41,15 +41,5 @@ public class Swarmling : Entity {
       float targAng = Vector2.SignedAngle(Vector2.up, lookDir);
       Rotate(Mathf.DeltaAngle(rb.rotation, targAng));
     }
-  }
-  
-  private void OnTriggerEnter2D(Collider2D collider) {
-    if (collider.name != "Sight") {
-      targets.Add(collider);
-    }
-  }
-  
-  private void OnTriggerExit2D(Collider2D collider) {
-    targets.Remove(collider);
   }
 }

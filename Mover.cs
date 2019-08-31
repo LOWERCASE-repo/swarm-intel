@@ -1,7 +1,8 @@
 using UnityEngine;
 
-public abstract class Entity : MonoBehaviour {
-
+public abstract class Mover : MonoBehaviour {
+  
+  [Header("Movement")]
   [SerializeField]
   internal float speed;
   [SerializeField]
@@ -42,7 +43,6 @@ public abstract class Entity : MonoBehaviour {
     // if (dir.Equals(Vector2.zero)) return;
     // float ang = Vector2.SignedAngle(Vector2.up, dir);
     // rb.rotation = Mathf.LerpAngle(rb.rotation, ang, 1f / Mathf.PI);
-    // Debug.Log(rb.angularVelocity * Mathf.Deg2Rad);
     
     float mag = Mathf.Sign(dir) * turnAccel;
     rb.AddTorque(mag);
